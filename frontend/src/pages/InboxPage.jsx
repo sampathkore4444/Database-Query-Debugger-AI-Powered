@@ -10,7 +10,8 @@ export default function InboxPage() {
     useEffect(() => {
         const fetchIncidents = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/api/v1/agents/incidents/${tenantId}`);
+                // Fetch from the correct queries/inbox endpoint
+                const response = await axios.get(`http://localhost:8000/api/v1/queries/inbox`);
                 setIncidents(response.data);
             } catch (err) {
                 console.error("Failed to fetch incidents", err);
