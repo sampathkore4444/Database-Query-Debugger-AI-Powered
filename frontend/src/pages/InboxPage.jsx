@@ -10,8 +10,13 @@ export default function InboxPage() {
     useEffect(() => {
         const fetchIncidents = async () => {
             try {
-                // Fetch from the correct queries/inbox endpoint
-                const response = await axios.get(`http://localhost:8000/api/v1/queries/inbox`);
+                const token = localStorage.getItem('token');
+                // Fetch from the correct queries/inbox endpoint with Auth header
+                const response = await axios.get(`http://localhost:8000/api/v1/queries/inbox`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
                 setIncidents(response.data);
             } catch (err) {
                 console.error("Failed to fetch incidents", err);
