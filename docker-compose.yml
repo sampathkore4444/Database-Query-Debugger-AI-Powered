@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  db-backend:
+    image: postgres:15-alpine
+    container_name: antigravity_backend_db
+    environment:
+      POSTGRES_USER: antigravity
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: backend_db
+    ports:
+      - "5434:5432"
+    volumes:
+      - backend_db_data:/var/lib/postgresql/data
+
+  db-monitored:
+    image: postgres:15-alpine
+    container_name: antigravity_monitored_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: user_db
+    ports:
+      - "5433:5432" # Exposed on 5433 to avoid collision
+    volumes:
+      - monitored_db_data:/var/lib/postgresql/data
+    command: postgres -c shared_preload_libraries=pg_stat_statements -c pg_stat_statements.track=all
+
+volumes:
+  backend_db_data:
+  monitored_db_data:
